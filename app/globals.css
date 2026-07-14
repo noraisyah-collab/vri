@@ -3,5 +3,11 @@
 @tailwind utilities;
 
 body {
-  @apply bg-slate-50 text-slate-800;
+  @apply text-slate-800;
+  background-color: #f8fafc;
+  background-image:
+    radial-gradient(rgba(44, 74, 110, 0.1) 1px, transparent 1px),
+    linear-gradient(180deg, #ffffff 0%, #eef4fb 100%);
+  background-size: 22px 22px, 100% 100%;
+  background-attachment: fixed, fixed;
 }
