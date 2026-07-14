@@ -39,35 +39,3 @@ export interface RoomBooking {
   created_at: string;
   updated_at: string;
 }
-
-// Jenis Database untuk hint jenis supabase-js (ringkas, bukan generate penuh)
-export interface Database {
-  public: {
-    Tables: {
-      rooms: {
-        Row: Room;
-        Insert: Partial<Room> & Pick<Room, "id" | "name">;
-        Update: Partial<Room>;
-      };
-      public_holidays: {
-        Row: PublicHoliday;
-        Insert: Omit<PublicHoliday, "id" | "updated_at"> & { id?: string };
-        Update: Partial<Omit<PublicHoliday, "id">>;
-      };
-      office_events: {
-        Row: OfficeEvent;
-        Insert: Omit<OfficeEvent, "id" | "created_at" | "updated_at"> & {
-          id?: string;
-        };
-        Update: Partial<Omit<OfficeEvent, "id">>;
-      };
-      room_bookings: {
-        Row: RoomBooking;
-        Insert: Omit<RoomBooking, "id" | "created_at" | "updated_at"> & {
-          id?: string;
-        };
-        Update: Partial<Omit<RoomBooking, "id">>;
-      };
-    };
-  };
-}
