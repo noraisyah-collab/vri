@@ -137,7 +137,7 @@ export default function CalendarView({ year }: { year: number }) {
         </div>
         <div className="flex gap-2">
           <Button variant="secondary" onClick={openAddHoliday}>+ Tambah Cuti</Button>
-          <Button onClick={() => openAddEvent(todayKey)}>+ Tambah Acara</Button>
+          <Button onClick={() => openAddEvent(todayKey)}>+ Tambah Program</Button>
         </div>
       </div>
 
@@ -149,7 +149,7 @@ export default function CalendarView({ year }: { year: number }) {
           <span className="h-3 w-3 rounded bg-amber-600" /> Cuti Negeri Perak
         </span>
         <span className="flex items-center gap-1">
-          <span className="h-3 w-3 rounded bg-vri-blue/20" /> Acara Pejabat
+          <span className="h-3 w-3 rounded bg-vri-blue/20" /> Program Pejabat
         </span>
       </div>
 

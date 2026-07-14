@@ -44,7 +44,7 @@ export default function DayCell({
         <button
           onClick={onAddEvent}
           className="text-xs text-slate-400 hover:text-vri-blue"
-          title="Tambah acara"
+          title="Tambah program"
         >
           +
         </button>

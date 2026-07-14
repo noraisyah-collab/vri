@@ -48,7 +48,7 @@ export default function EventFormModal({
 
   async function handleSave() {
     if (!title.trim()) {
-      setError("Sila isi nama acara.");
+      setError("Sila isi nama program.");
       return;
     }
     if (endTime <= startTime) {
@@ -81,7 +81,7 @@ export default function EventFormModal({
 
   async function handleDelete() {
     if (!event) return;
-    if (!confirm(`Padam acara "${event.title}"?`)) return;
+    if (!confirm(`Padam program "${event.title}"?`)) return;
     setSaving(true);
     const { error } = await supabase.from("office_events").delete().eq("id", event.id);
     setSaving(false);
@@ -93,10 +93,10 @@ export default function EventFormModal({
   }
 
   return (
-    <Modal open={open} onClose={onClose} title={event ? "Edit Acara Pejabat" : "Tambah Acara Pejabat"}>
+    <Modal open={open} onClose={onClose} title={event ? "Edit Program Pejabat" : "Tambah Program Pejabat"}>
       <div className="space-y-3">
         <div>
-          <label className="block text-sm font-medium text-slate-600">Nama Acara</label>
+          <label className="block text-sm font-medium text-slate-600">Nama Program</label>
           <input
             className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
             value={title}

@@ -4,13 +4,13 @@ const CARDS = [
   {
     href: "/takwim/2026",
     title: "Takwim 2026",
-    desc: "Cuti umum & acara pejabat tahun 2026",
+    desc: "Cuti umum & program pejabat tahun 2026",
     className: "bg-vri-blue",
   },
   {
     href: "/takwim/2027",
     title: "Takwim 2027",
-    desc: "Cuti umum & acara pejabat tahun 2027",
+    desc: "Cuti umum & program pejabat tahun 2027",
     className: "bg-vri-purple",
   },
   {
