@@ -2,6 +2,8 @@
 
 import type { OfficeEvent, PublicHoliday } from "@/lib/supabase/types";
 
+const MAX_EVENTS_SHOWN = 2;
+
 export default function DayCell({
   date,
   inCurrentMonth,
@@ -11,6 +13,7 @@ export default function DayCell({
   onAddEvent,
   onEditEvent,
   onEditHoliday,
+  onViewDay,
 }: {
   date: Date;
   inCurrentMonth: boolean;
@@ -20,6 +23,7 @@ export default function DayCell({
   onAddEvent: () => void;
   onEditEvent: (event: OfficeEvent) => void;
   onEditHoliday: (holiday: PublicHoliday) => void;
+  onViewDay: () => void;
 }) {
   const isWeekend = date.getDay() === 0 || date.getDay() === 6;
 
@@ -29,18 +33,23 @@ export default function DayCell({
       ? "bg-amber-50/60"
       : "bg-white";
 
+  const visibleEvents = events.slice(0, MAX_EVENTS_SHOWN);
+  const hiddenCount = events.length - visibleEvents.length;
+
   return (
     <div
       className={`flex min-h-[110px] flex-col gap-1 border border-slate-100 p-2 text-left align-top ${bgClass}`}
     >
       <div className="flex items-center justify-between">
-        <span
-          className={`text-sm ${
-            isToday ? "flex h-6 w-6 items-center justify-center rounded-full bg-vri-blue font-semibold text-white" : ""
+        <button
+          onClick={onViewDay}
+          className={`text-sm hover:underline ${
+            isToday ? "flex h-6 w-6 items-center justify-center rounded-full bg-vri-blue font-semibold text-white hover:no-underline" : ""
           }`}
+          title="Lihat semua program hari ini"
         >
           {date.getDate()}
-        </span>
+        </button>
         <button
           onClick={onAddEvent}
           className="text-xs text-slate-400 hover:text-vri-blue"
@@ -63,7 +72,7 @@ export default function DayCell({
         </button>
       ))}
 
-      {events.map((ev) => (
+      {visibleEvents.map((ev) => (
         <button
           key={ev.id}
           onClick={() => onEditEvent(ev)}
@@ -76,6 +85,15 @@ export default function DayCell({
           </span>
         </button>
       ))}
+
+      {hiddenCount > 0 && (
+        <button
+          onClick={onViewDay}
+          className="w-full truncate rounded px-1.5 py-0.5 text-left text-[11px] font-medium text-slate-500 hover:bg-slate-100"
+        >
+          +{hiddenCount} lagi program
+        </button>
+      )}
     </div>
   );
 }

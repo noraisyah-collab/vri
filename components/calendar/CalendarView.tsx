@@ -8,6 +8,7 @@ import { MONTH_NAMES_MS, toDateKey } from "@/lib/calendar";
 import CalendarGrid from "./CalendarGrid";
 import EventFormModal from "./EventFormModal";
 import HolidayEditModal from "./HolidayEditModal";
+import DayDetailModal from "./DayDetailModal";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import type { OfficeEvent, PublicHoliday } from "@/lib/supabase/types";
@@ -29,6 +30,9 @@ export default function CalendarView({ year }: { year: number }) {
   const [editingHoliday, setEditingHoliday] = useState<PublicHoliday | null>(null);
 
   const [monthPickerOpen, setMonthPickerOpen] = useState(false);
+
+  const [dayDetailOpen, setDayDetailOpen] = useState(false);
+  const [dayDetailDate, setDayDetailDate] = useState("");
 
   // Betulkan "hari ini"/bulan lalai ikut tarikh sebenar (pelayan), bukan jam
   // peranti pengguna — hanya jika pengguna belum sendiri navigasi bulan.
@@ -118,6 +122,11 @@ export default function CalendarView({ year }: { year: number }) {
     setHolidayModalOpen(true);
   }
 
+  function openDayDetail(dateKey: string) {
+    setDayDetailDate(dateKey);
+    setDayDetailOpen(true);
+  }
+
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
@@ -167,6 +176,7 @@ export default function CalendarView({ year }: { year: number }) {
               onAddEvent={openAddEvent}
               onEditEvent={openEditEvent}
               onEditHoliday={openEditHoliday}
+              onViewDay={openDayDetail}
             />
           </div>
         </div>
@@ -183,6 +193,26 @@ export default function CalendarView({ year }: { year: number }) {
         onClose={() => setHolidayModalOpen(false)}
         holiday={editingHoliday}
         defaultDate={holidayModalDefaultDate}
+      />
+
+      <DayDetailModal
+        open={dayDetailOpen}
+        onClose={() => setDayDetailOpen(false)}
+        dateKey={dayDetailDate}
+        holidays={holidaysByDate[dayDetailDate] ?? []}
+        events={eventsByDate[dayDetailDate] ?? []}
+        onAddEvent={() => {
+          setDayDetailOpen(false);
+          openAddEvent(dayDetailDate);
+        }}
+        onEditEvent={(event) => {
+          setDayDetailOpen(false);
+          openEditEvent(event);
+        }}
+        onEditHoliday={(holiday) => {
+          setDayDetailOpen(false);
+          openEditHoliday(holiday);
+        }}
       />
 
       <Modal open={monthPickerOpen} onClose={() => setMonthPickerOpen(false)} title={`Pilih Bulan ${year}`}>

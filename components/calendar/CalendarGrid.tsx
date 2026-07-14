@@ -13,6 +13,7 @@ export default function CalendarGrid({
   onAddEvent,
   onEditEvent,
   onEditHoliday,
+  onViewDay,
 }: {
   year: number;
   month: number;
@@ -22,6 +23,7 @@ export default function CalendarGrid({
   onAddEvent: (dateKey: string) => void;
   onEditEvent: (event: OfficeEvent) => void;
   onEditHoliday: (holiday: PublicHoliday) => void;
+  onViewDay: (dateKey: string) => void;
 }) {
   const days = buildMonthGrid(year, month);
 
@@ -48,6 +50,7 @@ export default function CalendarGrid({
               onAddEvent={() => onAddEvent(key)}
               onEditEvent={onEditEvent}
               onEditHoliday={onEditHoliday}
+              onViewDay={() => onViewDay(key)}
             />
           );
         })}
