@@ -4,10 +4,10 @@
 
 body {
   @apply text-slate-800;
-  background-color: #eaf2fb;
-  background-image: url("/bg-lab.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-color: #f8fafc;
+  background-image:
+    radial-gradient(rgba(44, 74, 110, 0.1) 1px, transparent 1px),
+    linear-gradient(180deg, #ffffff 0%, #eef4fb 100%);
+  background-size: 22px 22px, 100% 100%;
+  background-attachment: fixed, fixed;
 }
