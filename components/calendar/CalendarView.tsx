@@ -158,7 +158,7 @@ export default function CalendarView({ year }: { year: number }) {
           <span className="h-3 w-3 rounded bg-amber-600" /> Cuti Negeri Perak
         </span>
         <span className="flex items-center gap-1">
-          <span className="h-3 w-3 rounded bg-teal-500" /> Program Pejabat
+          <span className="h-3 w-3 rounded bg-indigo-500" /> Program Pejabat
         </span>
       </div>
 

@@ -47,11 +47,11 @@ export default function DayDetailModal({
           <button
             key={ev.id}
             onClick={() => onEditEvent(ev)}
-            className="block w-full rounded-md border border-teal-200 bg-teal-50 px-3 py-2 text-left hover:bg-teal-100"
+            className="block w-full rounded-md border border-indigo-200 bg-indigo-50 px-3 py-2 text-left hover:bg-indigo-100"
           >
             <div className="flex items-start justify-between gap-2">
               <span className="font-medium text-slate-800">{ev.title}</span>
-              <span className="shrink-0 text-xs font-semibold text-teal-700">
+              <span className="shrink-0 text-xs font-semibold text-indigo-700">
                 {ev.start_time.slice(0, 5)}-{ev.end_time.slice(0, 5)}
               </span>
             </div>

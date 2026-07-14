@@ -76,11 +76,11 @@ export default function DayCell({
         <button
           key={ev.id}
           onClick={() => onEditEvent(ev)}
-          className="flex w-full flex-col items-start rounded border border-teal-200 bg-teal-50 px-1.5 py-0.5 text-left hover:bg-teal-100"
+          className="flex w-full flex-col items-start rounded border border-indigo-200 bg-indigo-50 px-1.5 py-0.5 text-left hover:bg-indigo-100"
           title={`${ev.title} (${ev.start_time.slice(0, 5)}-${ev.end_time.slice(0, 5)})`}
         >
-          <span className="w-full truncate text-[11px] font-medium text-teal-800">{ev.title}</span>
-          <span className="w-full truncate text-[10px] text-teal-700/80">
+          <span className="w-full truncate text-[11px] font-medium text-indigo-800">{ev.title}</span>
+          <span className="w-full truncate text-[10px] text-indigo-700/80">
             {ev.start_time.slice(0, 5)}-{ev.end_time.slice(0, 5)}
           </span>
         </button>
