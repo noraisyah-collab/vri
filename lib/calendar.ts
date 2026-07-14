@@ -26,7 +26,9 @@ export const MONTH_NAMES_MS = [
   "Julai", "Ogos", "September", "Oktober", "November", "Disember",
 ];
 
-export const WEEKDAY_NAMES_MS = ["Isn", "Sel", "Rab", "Kha", "Jum", "Sab", "Ahd"];
+export const WEEKDAY_NAMES_MS = [
+  "Isnin", "Selasa", "Rabu", "Khamis", "Jumaat", "Sabtu", "Ahad",
+];
 
 /** Tukar "2026-07-14" -> "14 JULAI 2026". */
 export function formatFullDateMs(dateKey: string): string {
