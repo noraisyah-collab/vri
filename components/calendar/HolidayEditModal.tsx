@@ -48,6 +48,10 @@ export default function HolidayEditModal({
       setError("Sila pilih tarikh.");
       return;
     }
+    if (!holiday) {
+      const ok = await requireAdmin();
+      if (!ok) return;
+    }
     setSaving(true);
 
     const payload = {

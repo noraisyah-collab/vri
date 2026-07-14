@@ -57,8 +57,7 @@ export function useAdminGate() {
     <Modal open={open} onClose={handleCancel} title="Sahkan Kata Laluan Admin">
       <div className="space-y-3">
         <p className="text-xs text-slate-500">
-          Tindakan padam memerlukan kata laluan admin supaya entri tak terpadam
-          tanpa sengaja.
+          Tindakan ini memerlukan kata laluan admin.
         </p>
         <input
           type="password"
