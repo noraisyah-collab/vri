@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "sistem-vri-dev",
+      "runtimeExecutable": "C:\\Users\\DVS\\Desktop\\sistem-vri\\dev.cmd",
+      "runtimeArgs": [],
+      "port": 3000
+    }
+  ]
+}
