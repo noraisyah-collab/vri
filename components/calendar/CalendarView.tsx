@@ -25,6 +25,7 @@ export default function CalendarView({ year }: { year: number }) {
   const [editingEvent, setEditingEvent] = useState<OfficeEvent | null>(null);
 
   const [holidayModalOpen, setHolidayModalOpen] = useState(false);
+  const [holidayModalDefaultDate, setHolidayModalDefaultDate] = useState("");
   const [editingHoliday, setEditingHoliday] = useState<PublicHoliday | null>(null);
 
   const [monthPickerOpen, setMonthPickerOpen] = useState(false);
@@ -107,6 +108,13 @@ export default function CalendarView({ year }: { year: number }) {
 
   function openEditHoliday(holiday: PublicHoliday) {
     setEditingHoliday(holiday);
+    setHolidayModalDefaultDate(holiday.holiday_date);
+    setHolidayModalOpen(true);
+  }
+
+  function openAddHoliday() {
+    setEditingHoliday(null);
+    setHolidayModalDefaultDate(todayKey);
     setHolidayModalOpen(true);
   }
 
@@ -127,7 +135,10 @@ export default function CalendarView({ year }: { year: number }) {
             &rarr;
           </Button>
         </div>
-        <Button onClick={() => openAddEvent(todayKey)}>+ Tambah Acara</Button>
+        <div className="flex gap-2">
+          <Button variant="secondary" onClick={openAddHoliday}>+ Tambah Cuti</Button>
+          <Button onClick={() => openAddEvent(todayKey)}>+ Tambah Acara</Button>
+        </div>
       </div>
 
       <div className="mb-4 flex gap-4 text-xs text-slate-500">
@@ -171,6 +182,7 @@ export default function CalendarView({ year }: { year: number }) {
         open={holidayModalOpen}
         onClose={() => setHolidayModalOpen(false)}
         holiday={editingHoliday}
+        defaultDate={holidayModalDefaultDate}
       />
 
       <Modal open={monthPickerOpen} onClose={() => setMonthPickerOpen(false)} title={`Pilih Bulan ${year}`}>
