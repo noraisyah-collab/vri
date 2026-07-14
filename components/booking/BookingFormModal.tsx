@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
+import { useAdminGate } from "@/components/ui/AdminGate";
 import { supabase } from "@/lib/supabase/client";
 import { formatFullDateMs } from "@/lib/calendar";
 import type { RoomBooking } from "@/lib/supabase/types";
@@ -32,6 +33,7 @@ export default function BookingFormModal({
   const [purpose, setPurpose] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const { requireAdmin, gateElement } = useAdminGate();
 
   useEffect(() => {
     if (booking) {
@@ -83,6 +85,8 @@ export default function BookingFormModal({
   async function handleCancel() {
     if (!booking) return;
     if (!confirm("Batalkan tempahan ini?")) return;
+    const ok = await requireAdmin();
+    if (!ok) return;
     setSaving(true);
     const { error } = await supabase.from("room_bookings").delete().eq("id", booking.id);
     setSaving(false);
@@ -150,6 +154,7 @@ export default function BookingFormModal({
           </div>
         </div>
       </div>
+      {gateElement}
     </Modal>
   );
 }

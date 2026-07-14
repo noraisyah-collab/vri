@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
 import DateInput from "@/components/ui/DateInput";
+import { useAdminGate } from "@/components/ui/AdminGate";
 import { supabase } from "@/lib/supabase/client";
 import type { PublicHoliday } from "@/lib/supabase/types";
 
@@ -23,6 +24,7 @@ export default function HolidayEditModal({
   const [scope, setScope] = useState<"persekutuan" | "negeri_perak">("persekutuan");
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const { requireAdmin, gateElement } = useAdminGate();
 
   useEffect(() => {
     if (holiday) {
@@ -70,6 +72,8 @@ export default function HolidayEditModal({
   async function handleDelete() {
     if (!holiday) return;
     if (!confirm(`Padam cuti "${holiday.name}"?`)) return;
+    const ok = await requireAdmin();
+    if (!ok) return;
     setSaving(true);
     const { error } = await supabase.from("public_holidays").delete().eq("id", holiday.id);
     setSaving(false);
@@ -133,6 +137,7 @@ export default function HolidayEditModal({
           </div>
         </div>
       </div>
+      {gateElement}
     </Modal>
   );
 }

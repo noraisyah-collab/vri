@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Modal from "@/components/ui/Modal";
 import Button from "@/components/ui/Button";
 import DateInput from "@/components/ui/DateInput";
+import { useAdminGate } from "@/components/ui/AdminGate";
 import { supabase } from "@/lib/supabase/client";
 import type { OfficeEvent } from "@/lib/supabase/types";
 
@@ -26,6 +27,7 @@ export default function EventFormModal({
   const [organizer, setOrganizer] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const { requireAdmin, gateElement } = useAdminGate();
 
   useEffect(() => {
     if (event) {
@@ -82,6 +84,8 @@ export default function EventFormModal({
   async function handleDelete() {
     if (!event) return;
     if (!confirm(`Padam program "${event.title}"?`)) return;
+    const ok = await requireAdmin();
+    if (!ok) return;
     setSaving(true);
     const { error } = await supabase.from("office_events").delete().eq("id", event.id);
     setSaving(false);
@@ -167,6 +171,7 @@ export default function EventFormModal({
           </div>
         </div>
       </div>
+      {gateElement}
     </Modal>
   );
 }
