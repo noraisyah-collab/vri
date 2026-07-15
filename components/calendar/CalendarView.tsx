@@ -5,7 +5,6 @@ import { supabase } from "@/lib/supabase/client";
 import { subscribeToTable } from "@/lib/realtime";
 import { getServerOffset } from "@/lib/serverTime";
 import { MONTH_NAMES_MS, toDateKey } from "@/lib/calendar";
-import { YEAR_THEME } from "@/lib/constants";
 import CalendarGrid from "./CalendarGrid";
 import EventFormModal from "./EventFormModal";
 import HolidayEditModal from "./HolidayEditModal";
@@ -137,7 +136,11 @@ export default function CalendarView({ year }: { year: number }) {
           </Button>
           <button
             onClick={() => setMonthPickerOpen(true)}
-            className={`flex w-56 items-center justify-center gap-2 rounded-lg px-4 py-2 text-lg font-semibold text-white shadow-sm transition hover:opacity-90 ${YEAR_THEME[year]?.bg ?? "bg-vri-blue"}`}
+            className={`flex w-56 items-center justify-center gap-2 rounded-lg border px-4 py-2 text-lg font-medium transition hover:bg-opacity-80 ${
+              year === 2027
+                ? "border-vri-purple/20 bg-vri-purple/10 text-vri-purple"
+                : "border-vri-blue/20 bg-vri-blue/10 text-vri-blue"
+            }`}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <rect x="3" y="5" width="18" height="16" rx="2" />
