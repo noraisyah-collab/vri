@@ -6,9 +6,8 @@ body {
   @apply text-slate-800;
   background-color: #f8fafc;
   background-image:
-    repeating-linear-gradient(60deg, rgba(44, 74, 110, 0.05) 0, rgba(44, 74, 110, 0.05) 1px, transparent 1px, transparent 42px),
-    repeating-linear-gradient(-60deg, rgba(44, 74, 110, 0.05) 0, rgba(44, 74, 110, 0.05) 1px, transparent 1px, transparent 42px),
-    repeating-linear-gradient(0deg, rgba(44, 74, 110, 0.04) 0, rgba(44, 74, 110, 0.04) 1px, transparent 1px, transparent 42px),
+    radial-gradient(rgba(44, 74, 110, 0.1) 1px, transparent 1px),
     linear-gradient(180deg, #ffffff 0%, #eef4fb 100%);
-  background-attachment: fixed;
+  background-size: 22px 22px, 100% 100%;
+  background-attachment: fixed, fixed;
 }
