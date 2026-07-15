@@ -38,7 +38,7 @@ export default function ScheduleGrid({
                 {booking.purpose ? ` · ${booking.purpose}` : ""}
               </span>
             ) : (
-              <span className="flex-1 text-sm text-slate-400">Kosong — klik untuk tempah</span>
+              <span className="flex-1 text-sm font-medium text-emerald-600">Tersedia</span>
             )}
           </button>
         );

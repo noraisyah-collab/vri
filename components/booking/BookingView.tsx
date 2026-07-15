@@ -83,7 +83,12 @@ export default function BookingView() {
       {loading ? (
         <p className="text-sm text-slate-400">Memuatkan...</p>
       ) : (
-        <ScheduleGrid bookingsBySlot={bookingsBySlot} onSlotClick={handleSlotClick} />
+        <>
+          <ScheduleGrid bookingsBySlot={bookingsBySlot} onSlotClick={handleSlotClick} />
+          <p className="mt-2 text-xs text-slate-400">
+            Sila pilih tarikh dan waktu untuk membuat tempahan.
+          </p>
+        </>
       )}
 
       <BookingFormModal
