@@ -99,6 +99,16 @@ export default function EventFormModal({
   return (
     <Modal open={open} onClose={onClose} title={event ? "Edit Program Pejabat" : "Tambah Program Pejabat"}>
       <div className="space-y-3">
+        {!event && (
+          <p className="rounded-md bg-amber-50 px-3 py-2 text-xs text-amber-800">
+            Program baharu akan menunggu kelulusan admin sebelum dipaparkan dalam Takwim.
+          </p>
+        )}
+        {event && event.status === "menunggu" && (
+          <p className="rounded-md bg-amber-50 px-3 py-2 text-xs text-amber-800">
+            Program ini masih menunggu kelulusan admin.
+          </p>
+        )}
         <div>
           <label className="block text-sm font-medium text-slate-600">Nama Program</label>
           <input

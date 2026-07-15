@@ -9,6 +9,7 @@ import CalendarGrid from "./CalendarGrid";
 import EventFormModal from "./EventFormModal";
 import HolidayEditModal from "./HolidayEditModal";
 import DayDetailModal from "./DayDetailModal";
+import PendingApprovalsModal from "./PendingApprovalsModal";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
 import type { OfficeEvent, PublicHoliday } from "@/lib/supabase/types";
@@ -33,6 +34,8 @@ export default function CalendarView({ year }: { year: number }) {
 
   const [dayDetailOpen, setDayDetailOpen] = useState(false);
   const [dayDetailDate, setDayDetailDate] = useState("");
+
+  const [pendingModalOpen, setPendingModalOpen] = useState(false);
 
   // Betulkan "hari ini"/bulan lalai ikut tarikh sebenar (pelayan), bukan jam
   // peranti pengguna — hanya jika pengguna belum sendiri navigasi bulan.
@@ -90,6 +93,7 @@ export default function CalendarView({ year }: { year: number }) {
   const eventsByDate = useMemo(() => {
     const map: Record<string, OfficeEvent[]> = {};
     for (const e of events) {
+      if (e.status !== "diluluskan") continue;
       (map[e.event_date] ??= []).push(e);
     }
     for (const key in map) {
@@ -97,6 +101,11 @@ export default function CalendarView({ year }: { year: number }) {
     }
     return map;
   }, [events]);
+
+  const pendingEvents = useMemo(
+    () => events.filter((e) => e.status === "menunggu").sort((a, b) => a.event_date.localeCompare(b.event_date)),
+    [events]
+  );
 
   function openAddEvent(dateKey: string) {
     setEditingEvent(null);
@@ -164,6 +173,11 @@ export default function CalendarView({ year }: { year: number }) {
           </Button>
         </div>
         <div className="flex gap-2">
+          {pendingEvents.length > 0 && (
+            <Button variant="secondary" onClick={() => setPendingModalOpen(true)}>
+              Permohonan Menunggu ({pendingEvents.length})
+            </Button>
+          )}
           <Button variant="secondary" onClick={openAddHoliday}>+ Tambah Cuti</Button>
           <Button onClick={() => openAddEvent(todayKey)}>+ Tambah Program</Button>
         </div>
@@ -212,6 +226,12 @@ export default function CalendarView({ year }: { year: number }) {
         onClose={() => setHolidayModalOpen(false)}
         holiday={editingHoliday}
         defaultDate={holidayModalDefaultDate}
+      />
+
+      <PendingApprovalsModal
+        open={pendingModalOpen}
+        onClose={() => setPendingModalOpen(false)}
+        events={pendingEvents}
       />
 
       <DayDetailModal

@@ -15,6 +15,8 @@ export interface PublicHoliday {
   updated_at: string;
 }
 
+export type EventStatus = "menunggu" | "diluluskan";
+
 export interface OfficeEvent {
   id: string;
   title: string;
@@ -23,6 +25,7 @@ export interface OfficeEvent {
   end_time: string; // HH:MM:SS
   location: string | null;
   organizer: string | null;
+  status: EventStatus;
   created_at: string;
   updated_at: string;
 }
