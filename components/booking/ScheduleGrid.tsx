@@ -19,14 +19,8 @@ export default function ScheduleGrid({
     <div className="divide-y divide-slate-100 overflow-hidden rounded-lg border border-slate-200">
       {BOOKING_SLOTS.map((slot) => {
         const booking = bookingsBySlot[slot] ?? null;
-        return (
-          <button
-            key={slot}
-            onClick={() => onSlotClick(slot, booking)}
-            className={`flex w-full items-center justify-between px-4 py-3 text-left transition ${
-              booking ? "bg-vri-terracotta/10 hover:bg-vri-terracotta/20" : "bg-white hover:bg-slate-50"
-            }`}
-          >
+        const content = (
+          <>
             <span className="w-28 shrink-0 text-sm font-medium text-slate-600">
               {slot} - {addHour(slot)}
             </span>
@@ -40,6 +34,24 @@ export default function ScheduleGrid({
             ) : (
               <span className="flex-1 text-sm font-medium text-emerald-600">Tersedia</span>
             )}
+          </>
+        );
+
+        if (!booking) {
+          return (
+            <div key={slot} className="flex w-full items-center justify-between bg-white px-4 py-3">
+              {content}
+            </div>
+          );
+        }
+
+        return (
+          <button
+            key={slot}
+            onClick={() => onSlotClick(slot, booking)}
+            className="flex w-full items-center justify-between bg-vri-terracotta/10 px-4 py-3 text-left transition hover:bg-vri-terracotta/20"
+          >
+            {content}
           </button>
         );
       })}

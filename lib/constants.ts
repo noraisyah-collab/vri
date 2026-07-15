@@ -10,6 +10,12 @@ export const BOOKING_SLOTS = [
   "13:00", "14:00", "15:00", "16:00",
 ] as const;
 
+// Semua penanda jam 8 pagi - 5 petang (untuk pilihan Masa Mula/Masa Tamat)
+export const BOOKING_HOURS = [
+  "08:00", "09:00", "10:00", "11:00", "12:00",
+  "13:00", "14:00", "15:00", "16:00", "17:00",
+] as const;
+
 export const CALENDAR_YEARS = [2026, 2027] as const;
 
 export const YEAR_THEME: Record<number, { accent: string; bg: string; label: string }> = {

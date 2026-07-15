@@ -9,6 +9,7 @@ import { toDateKey } from "@/lib/calendar";
 import RoomTabs from "./RoomTabs";
 import ScheduleGrid from "./ScheduleGrid";
 import BookingFormModal from "./BookingFormModal";
+import BookingRangeFormModal from "./BookingRangeFormModal";
 import BookingCalendarView from "./BookingCalendarView";
 import DateInput from "@/components/ui/DateInput";
 import Button from "@/components/ui/Button";
@@ -25,6 +26,8 @@ export default function BookingView() {
   const [modalOpen, setModalOpen] = useState(false);
   const [activeSlot, setActiveSlot] = useState<string>("");
   const [activeBooking, setActiveBooking] = useState<RoomBooking | null>(null);
+
+  const [rangeModalOpen, setRangeModalOpen] = useState(false);
 
   // Betulkan tarikh lalai supaya ikut tarikh sebenar (pelayan), bukan jam
   // peranti pengguna yang mungkin tersalah tetap — hanya jika pengguna belum
@@ -79,7 +82,12 @@ export default function BookingView() {
 
   return (
     <div>
-      <h2 className="mb-4 text-xl font-semibold text-slate-800">Tempahan Bilik</h2>
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-xl font-semibold text-slate-800">Tempahan Bilik</h2>
+        <Button variant="terracotta" onClick={() => setRangeModalOpen(true)}>
+          + Tempah Bilik
+        </Button>
+      </div>
 
       <RoomTabs activeRoomId={roomId} onChange={setRoomId} />
 
@@ -116,7 +124,8 @@ export default function BookingView() {
         <>
           <ScheduleGrid bookingsBySlot={bookingsBySlot} onSlotClick={handleSlotClick} />
           <p className="mt-2 text-xs text-slate-400">
-            Sila pilih tarikh dan waktu untuk membuat tempahan.
+            Klik butang "+ Tempah Bilik" di atas untuk buat tempahan baharu. Klik slot yang
+            telah ditempah untuk lihat butiran atau batalkan.
           </p>
         </>
       )}
@@ -128,6 +137,13 @@ export default function BookingView() {
         bookingDate={date}
         slot={activeSlot}
         booking={activeBooking}
+      />
+
+      <BookingRangeFormModal
+        open={rangeModalOpen}
+        onClose={() => setRangeModalOpen(false)}
+        defaultRoomId={roomId}
+        defaultDate={date}
       />
     </div>
   );
