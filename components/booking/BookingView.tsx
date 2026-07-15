@@ -9,12 +9,15 @@ import { toDateKey } from "@/lib/calendar";
 import RoomTabs from "./RoomTabs";
 import ScheduleGrid from "./ScheduleGrid";
 import BookingFormModal from "./BookingFormModal";
+import BookingCalendarView from "./BookingCalendarView";
 import DateInput from "@/components/ui/DateInput";
+import Button from "@/components/ui/Button";
 import type { RoomBooking } from "@/lib/supabase/types";
 
 export default function BookingView() {
   const [roomId, setRoomId] = useState<string>(ROOMS[0].id);
   const [date, setDate] = useState<string>(() => toDateKey(new Date()));
+  const [viewMode, setViewMode] = useState<"senarai" | "kalendar">("senarai");
   const [bookings, setBookings] = useState<RoomBooking[]>([]);
   const [loading, setLoading] = useState(true);
   const dateChangedByUser = useRef(false);
@@ -69,18 +72,45 @@ export default function BookingView() {
     setModalOpen(true);
   }
 
+  function handleSelectDateFromCalendar(dateKey: string) {
+    handleDateChange(dateKey);
+    setViewMode("senarai");
+  }
+
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold text-slate-800">Tempahan Bilik</h2>
 
       <RoomTabs activeRoomId={roomId} onChange={setRoomId} />
 
-      <div className="my-4 flex items-center gap-3">
-        <label className="text-sm font-medium text-slate-600">Tarikh</label>
-        <DateInput value={date} onChange={handleDateChange} className="w-36" />
+      <div className="my-4 flex items-center justify-between gap-3">
+        {viewMode === "senarai" ? (
+          <div className="flex items-center gap-3">
+            <label className="text-sm font-medium text-slate-600">Tarikh</label>
+            <DateInput value={date} onChange={handleDateChange} className="w-36" />
+          </div>
+        ) : (
+          <div />
+        )}
+        <div className="flex gap-2">
+          <Button
+            variant={viewMode === "senarai" ? "terracotta" : "secondary"}
+            onClick={() => setViewMode("senarai")}
+          >
+            Senarai Harian
+          </Button>
+          <Button
+            variant={viewMode === "kalendar" ? "terracotta" : "secondary"}
+            onClick={() => setViewMode("kalendar")}
+          >
+            Kalendar Bulanan
+          </Button>
+        </div>
       </div>
 
-      {loading ? (
+      {viewMode === "kalendar" ? (
+        <BookingCalendarView roomId={roomId} onSelectDate={handleSelectDateFromCalendar} />
+      ) : loading ? (
         <p className="text-sm text-slate-400">Memuatkan...</p>
       ) : (
         <>
