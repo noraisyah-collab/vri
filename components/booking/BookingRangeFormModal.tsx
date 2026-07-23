@@ -129,6 +129,10 @@ export default function BookingRangeFormModal({
   return (
     <Modal open={open} onClose={onClose} title="Tempah Bilik">
       <div className="space-y-3">
+        <p className="rounded-md bg-amber-50 px-3 py-2 text-xs text-amber-800">
+          Tempahan akan menunggu kelulusan admin sebelum disahkan. Slot tetap
+          dikhaskan untuk anda semasa menunggu.
+        </p>
         <div>
           <label className="block text-sm font-medium text-slate-600">Lokasi</label>
           <select

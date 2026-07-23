@@ -4,9 +4,38 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase/client";
 import { subscribeToTable } from "@/lib/realtime";
 import { buildMonthGrid, toDateKey, MONTH_NAMES_MS, WEEKDAY_NAMES_MS } from "@/lib/calendar";
-import { BOOKING_SLOTS } from "@/lib/constants";
 import Button from "@/components/ui/Button";
-import type { RoomBooking } from "@/lib/supabase/types";
+import type { ApprovalStatus, RoomBooking } from "@/lib/supabase/types";
+
+const MAX_GROUPS_SHOWN = 2;
+
+interface BookingGroup {
+  startTime: string;
+  endTime: string;
+  label: string;
+  status: ApprovalStatus;
+}
+
+/** Gabungkan slot berturutan yang kongsi tujuan/pegawai sama jadi satu blok. */
+function buildGroups(dayBookings: RoomBooking[]): BookingGroup[] {
+  const sorted = [...dayBookings].sort((a, b) => a.start_time.localeCompare(b.start_time));
+  const groups: BookingGroup[] = [];
+
+  for (const b of sorted) {
+    const startTime = b.start_time.slice(0, 5);
+    const endTime = b.end_time.slice(0, 5);
+    const label = b.purpose?.trim() || b.officer_name;
+    const last = groups[groups.length - 1];
+
+    if (last && last.endTime === startTime && last.label === label && last.status === b.status) {
+      last.endTime = endTime;
+    } else {
+      groups.push({ startTime, endTime, label, status: b.status });
+    }
+  }
+
+  return groups;
+}
 
 export default function BookingCalendarView({
   roomId,
@@ -42,17 +71,20 @@ export default function BookingCalendarView({
     return () => unsub();
   }, [loadData]);
 
-  const countByDate = useMemo(() => {
-    const map: Record<string, number> = {};
+  const groupsByDate = useMemo(() => {
+    const byDate: Record<string, RoomBooking[]> = {};
     for (const b of bookings) {
-      map[b.booking_date] = (map[b.booking_date] ?? 0) + 1;
+      (byDate[b.booking_date] ??= []).push(b);
     }
-    return map;
+    const result: Record<string, BookingGroup[]> = {};
+    for (const date in byDate) {
+      result[date] = buildGroups(byDate[date]);
+    }
+    return result;
   }, [bookings]);
 
   const days = buildMonthGrid(year, month);
   const todayKey = toDateKey(now);
-  const totalSlots = BOOKING_SLOTS.length;
 
   function goToMonth(delta: number) {
     let newMonth = month + delta;
@@ -99,7 +131,9 @@ export default function BookingCalendarView({
                 const key = toDateKey(date);
                 const inMonth = date.getMonth() === month;
                 const isWeekend = date.getDay() === 0 || date.getDay() === 6;
-                const count = countByDate[key] ?? 0;
+                const groups = groupsByDate[key] ?? [];
+                const visibleGroups = groups.slice(0, MAX_GROUPS_SHOWN);
+                const hiddenCount = groups.length - visibleGroups.length;
 
                 const bgClass = !inMonth
                   ? "bg-slate-50 text-slate-300"
@@ -111,7 +145,7 @@ export default function BookingCalendarView({
                   <button
                     key={key}
                     onClick={() => onSelectDate(key)}
-                    className={`flex min-h-[84px] flex-col items-start gap-1.5 border border-slate-100 p-2 text-left transition hover:bg-slate-50 ${bgClass}`}
+                    className={`flex min-h-[92px] flex-col items-start gap-1 border border-slate-100 p-2 text-left transition hover:bg-slate-50 ${bgClass}`}
                   >
                     <span
                       className={`text-sm ${
@@ -122,9 +156,22 @@ export default function BookingCalendarView({
                     >
                       {date.getDate()}
                     </span>
-                    {count > 0 && (
-                      <span className="rounded bg-vri-terracotta/10 px-1.5 py-0.5 text-[11px] font-medium text-vri-terracotta">
-                        {count}/{totalSlots} ditempah
+                    {visibleGroups.map((g, i) => (
+                      <span
+                        key={i}
+                        className={`w-full truncate rounded px-1.5 py-0.5 text-[11px] font-medium ${
+                          g.status === "menunggu"
+                            ? "bg-amber-100 text-amber-800"
+                            : "bg-vri-terracotta/10 text-vri-terracotta"
+                        }`}
+                        title={`${g.startTime}-${g.endTime} ${g.label}`}
+                      >
+                        {g.startTime}-{g.endTime} {g.label}
+                      </span>
+                    ))}
+                    {hiddenCount > 0 && (
+                      <span className="w-full truncate rounded px-1.5 py-0.5 text-[11px] font-medium text-slate-500">
+                        +{hiddenCount} lagi
                       </span>
                     )}
                   </button>

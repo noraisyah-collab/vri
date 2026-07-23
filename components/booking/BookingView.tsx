@@ -11,6 +11,7 @@ import ScheduleGrid from "./ScheduleGrid";
 import BookingFormModal from "./BookingFormModal";
 import BookingRangeFormModal from "./BookingRangeFormModal";
 import BookingCalendarView from "./BookingCalendarView";
+import PendingBookingApprovalsModal from "./PendingBookingApprovalsModal";
 import DateInput from "@/components/ui/DateInput";
 import Button from "@/components/ui/Button";
 import type { RoomBooking } from "@/lib/supabase/types";
@@ -28,6 +29,9 @@ export default function BookingView() {
   const [activeBooking, setActiveBooking] = useState<RoomBooking | null>(null);
 
   const [rangeModalOpen, setRangeModalOpen] = useState(false);
+
+  const [pendingBookings, setPendingBookings] = useState<RoomBooking[]>([]);
+  const [pendingModalOpen, setPendingModalOpen] = useState(false);
 
   // Betulkan tarikh lalai supaya ikut tarikh sebenar (pelayan), bukan jam
   // peranti pengguna yang mungkin tersalah tetap — hanya jika pengguna belum
@@ -61,6 +65,21 @@ export default function BookingView() {
     return () => unsub();
   }, [loadData]);
 
+  const loadPending = useCallback(async () => {
+    const { data } = await supabase
+      .from("room_bookings")
+      .select("*")
+      .eq("status", "menunggu")
+      .order("booking_date", { ascending: true });
+    setPendingBookings(data ?? []);
+  }, []);
+
+  useEffect(() => {
+    loadPending();
+    const unsub = subscribeToTable("room_bookings", loadPending);
+    return () => unsub();
+  }, [loadPending]);
+
   const bookingsBySlot = useMemo(() => {
     const map: Record<string, RoomBooking> = {};
     for (const b of bookings) {
@@ -84,9 +103,16 @@ export default function BookingView() {
     <div>
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-xl font-semibold text-slate-800">Tempahan Bilik</h2>
-        <Button variant="terracotta" onClick={() => setRangeModalOpen(true)}>
-          + Tempah Bilik
-        </Button>
+        <div className="flex gap-2">
+          {pendingBookings.length > 0 && (
+            <Button variant="secondary" onClick={() => setPendingModalOpen(true)}>
+              Permohonan Menunggu ({pendingBookings.length})
+            </Button>
+          )}
+          <Button variant="terracotta" onClick={() => setRangeModalOpen(true)}>
+            + Tempah Bilik
+          </Button>
+        </div>
       </div>
 
       <RoomTabs activeRoomId={roomId} onChange={setRoomId} />
@@ -144,6 +170,12 @@ export default function BookingView() {
         onClose={() => setRangeModalOpen(false)}
         defaultRoomId={roomId}
         defaultDate={date}
+      />
+
+      <PendingBookingApprovalsModal
+        open={pendingModalOpen}
+        onClose={() => setPendingModalOpen(false)}
+        bookings={pendingBookings}
       />
     </div>
   );

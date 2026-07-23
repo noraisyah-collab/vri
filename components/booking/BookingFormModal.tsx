@@ -107,6 +107,11 @@ export default function BookingFormModal({
         <p className="text-lg font-semibold text-slate-700">
           {formatFullDateMs(bookingDate)}
         </p>
+        {booking?.status === "menunggu" && (
+          <p className="rounded-md bg-amber-50 px-3 py-2 text-xs text-amber-800">
+            Tempahan ini masih menunggu kelulusan admin.
+          </p>
+        )}
         <div>
           <label className="block text-sm font-medium text-slate-600">Nama Pegawai</label>
           <input

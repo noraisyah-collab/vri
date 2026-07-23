@@ -15,7 +15,8 @@ export interface PublicHoliday {
   updated_at: string;
 }
 
-export type EventStatus = "menunggu" | "diluluskan";
+/** Status kelulusan admin, dikongsi acara pejabat & tempahan bilik. */
+export type ApprovalStatus = "menunggu" | "diluluskan";
 
 export interface OfficeEvent {
   id: string;
@@ -25,7 +26,7 @@ export interface OfficeEvent {
   end_time: string; // HH:MM:SS
   location: string | null;
   organizer: string | null;
-  status: EventStatus;
+  status: ApprovalStatus;
   created_at: string;
   updated_at: string;
 }
@@ -39,6 +40,7 @@ export interface RoomBooking {
   officer_name: string;
   department: string;
   purpose: string | null;
+  status: ApprovalStatus;
   created_at: string;
   updated_at: string;
 }

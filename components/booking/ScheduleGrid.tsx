@@ -19,6 +19,7 @@ export default function ScheduleGrid({
     <div className="divide-y divide-slate-100 overflow-hidden rounded-lg border border-slate-200">
       {BOOKING_SLOTS.map((slot) => {
         const booking = bookingsBySlot[slot] ?? null;
+        const isPending = booking?.status === "menunggu";
         const content = (
           <>
             <span className="w-28 shrink-0 text-sm font-medium text-slate-600">
@@ -26,10 +27,17 @@ export default function ScheduleGrid({
             </span>
             {booking ? (
               <span className="flex-1 text-sm text-slate-700">
-                <span className="font-medium text-vri-terracotta">{booking.officer_name}</span>
+                <span className={`font-medium ${isPending ? "text-amber-700" : "text-vri-terracotta"}`}>
+                  {booking.officer_name}
+                </span>
                 {" · "}
                 {booking.department}
                 {booking.purpose ? ` · ${booking.purpose}` : ""}
+                {isPending && (
+                  <span className="ml-2 rounded bg-amber-100 px-1.5 py-0.5 text-[11px] font-medium text-amber-700">
+                    Menunggu Kelulusan
+                  </span>
+                )}
               </span>
             ) : (
               <span className="flex-1 text-sm font-medium text-emerald-600">Tersedia</span>
@@ -49,7 +57,9 @@ export default function ScheduleGrid({
           <button
             key={slot}
             onClick={() => onSlotClick(slot, booking)}
-            className="flex w-full items-center justify-between bg-vri-terracotta/10 px-4 py-3 text-left transition hover:bg-vri-terracotta/20"
+            className={`flex w-full items-center justify-between px-4 py-3 text-left transition ${
+              isPending ? "bg-amber-50 hover:bg-amber-100" : "bg-vri-terracotta/10 hover:bg-vri-terracotta/20"
+            }`}
           >
             {content}
           </button>
