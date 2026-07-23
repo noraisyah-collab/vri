@@ -216,7 +216,7 @@ export default function CalendarView({ year }: { year: number }) {
       )}
 
       <p className="mt-2 text-xs text-slate-400">
-        Kelulusan penambahan program pejabat dan tindakan padam boleh dirujuk
+        Kelulusan permohonan dan pembatalan program pejabat boleh dirujuk
         kepada Dr Aisyah Han, Cik Siti Rahmah, atau En Syamil.
       </p>
 

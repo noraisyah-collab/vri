@@ -154,7 +154,7 @@ export default function BookingView() {
             telah ditempah untuk lihat butiran atau batalkan.
           </p>
           <p className="mt-1 text-xs text-slate-400">
-            Kelulusan permohonan tempahan bilik dan tindakan padam boleh dirujuk kepada
+            Kelulusan permohonan dan pembatalan tempahan bilik boleh dirujuk kepada
             Dr Aisyah Han, Cik Siti Rahmah, atau En Syamil.
           </p>
         </>
