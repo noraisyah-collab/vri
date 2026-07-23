@@ -153,6 +153,10 @@ export default function BookingView() {
             Klik butang "+ Tempah Bilik" di atas untuk buat tempahan baharu. Klik slot yang
             telah ditempah untuk lihat butiran atau batalkan.
           </p>
+          <p className="mt-1 text-xs text-slate-400">
+            Kelulusan permohonan tempahan bilik dan tindakan padam boleh dirujuk kepada
+            Dr Aisyah Han, Cik Siti Rahmah, atau En Syamil.
+          </p>
         </>
       )}
 

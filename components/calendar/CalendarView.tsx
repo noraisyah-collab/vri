@@ -215,6 +215,11 @@ export default function CalendarView({ year }: { year: number }) {
         </div>
       )}
 
+      <p className="mt-2 text-xs text-slate-400">
+        Kelulusan penambahan program pejabat dan tindakan padam boleh dirujuk
+        kepada Dr Aisyah Han, Cik Siti Rahmah, atau En Syamil.
+      </p>
+
       <EventFormModal
         open={eventModalOpen}
         onClose={() => setEventModalOpen(false)}
