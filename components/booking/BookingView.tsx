@@ -88,6 +88,10 @@ export default function BookingView() {
     return map;
   }, [bookings]);
 
+  const pendingGroupCount = useMemo(() => {
+    return new Set(pendingBookings.map((b) => b.booking_group_id ?? b.id)).size;
+  }, [pendingBookings]);
+
   function handleSlotClick(slot: string, booking: RoomBooking | null) {
     setActiveSlot(slot);
     setActiveBooking(booking);
@@ -104,9 +108,9 @@ export default function BookingView() {
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-xl font-semibold text-slate-800">Tempahan Bilik</h2>
         <div className="flex gap-2">
-          {pendingBookings.length > 0 && (
+          {pendingGroupCount > 0 && (
             <Button variant="secondary" onClick={() => setPendingModalOpen(true)}>
-              Permohonan Menunggu ({pendingBookings.length})
+              Permohonan Menunggu ({pendingGroupCount})
             </Button>
           )}
           <Button variant="terracotta" onClick={() => setRangeModalOpen(true)}>

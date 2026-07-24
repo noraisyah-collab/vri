@@ -102,6 +102,8 @@ export default function BookingRangeFormModal({
       return;
     }
 
+    const groupId = crypto.randomUUID();
+
     const payloads = slots.map((s) => ({
       room_id: roomId,
       booking_date: bookingDate,
@@ -110,6 +112,7 @@ export default function BookingRangeFormModal({
       officer_name: officerName.trim(),
       department: department.trim(),
       purpose: purpose.trim() || null,
+      booking_group_id: groupId,
     }));
 
     const { error: insertError } = await supabase.from("room_bookings").insert(payloads);

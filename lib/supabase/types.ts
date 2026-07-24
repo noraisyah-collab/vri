@@ -41,6 +41,7 @@ export interface RoomBooking {
   department: string;
   purpose: string | null;
   status: ApprovalStatus;
+  booking_group_id: string | null;
   created_at: string;
   updated_at: string;
 }
